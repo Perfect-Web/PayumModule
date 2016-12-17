@@ -2,10 +2,9 @@
 namespace Payum\PayumModule\Registry;
 
 use Payum\Core\Registry\SimpleRegistry;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ServiceLocatorAwareRegistry extends SimpleRegistry implements ServiceLocatorAwareInterface
+class ServiceLocatorAwareRegistry extends SimpleRegistry
 {
     /**
      * @var ServiceLocatorInterface

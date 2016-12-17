@@ -5,9 +5,16 @@ use Payum\Core\Security\GenericTokenFactory;
 use Zend\Mvc\Controller\PluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
 
 class TokenFactoryFactory implements FactoryInterface
 {
+
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        return $this->createService($container);
+    }
+
     /**
      * {@inheritDoc}
      */

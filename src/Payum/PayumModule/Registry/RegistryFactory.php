@@ -5,9 +5,16 @@ use Payum\PayumModule\Action\GetHttpRequestAction;
 use Payum\PayumModule\Options\PayumOptions;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
 
 class RegistryFactory implements FactoryInterface
 {
+
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        return $this->createService($container);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -23,10 +30,10 @@ class RegistryFactory implements FactoryInterface
         );
 
         $getHttpRequestAction = new GetHttpRequestAction($serviceLocator);
-        foreach ($registry->getPayments() as $payment) {
+        foreach ($options->getPayments() as $payment) {
             $payment->addAction($getHttpRequestAction);
         }
-        
+
         //TODO: quick fix. we should avoid early init of services. has to be reworked to be lazy
         $registry->setServiceLocator($serviceLocator);
 
