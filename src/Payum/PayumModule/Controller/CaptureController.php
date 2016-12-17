@@ -11,15 +11,15 @@ class CaptureController extends PayumController
 {
     public function doAction()
     {
-        $token = $this->getHttpRequestVerifier()->verify($this->getRequest());
+        $token = $this->getHttpRequestVerifier()->verify($this);
 
-        $payment = $this->getPayum()->getGateway($token->getGatewayName());
+        $gateway = $this->getPayum()->getGateway($token->getGatewayName());
 
         try {
-            $payment->execute(new Capture($token));
+            $gateway->execute(new Capture($token));
         } catch (ReplyInterface $reply) {
             if ($reply instanceof HttpRedirect) {
-                $this->redirect()->toUrl($reply->getUrl());
+                return $this->redirect()->toUrl($reply->getUrl());
             }
 
             if ($reply instanceof HttpResponse) {
@@ -37,6 +37,6 @@ class CaptureController extends PayumController
 
         $this->getHttpRequestVerifier()->invalidate($token);
 
-        $this->redirect()->toUrl($token->getAfterUrl());
+        return $this->redirect()->toUrl($token->getAfterUrl());
     }
 }
